@@ -39,7 +39,9 @@ cd nord-termite
 bash ./install.sh
 
 # Opacity
-echo 'opacity-rule = [ "90:class_g *?= 'x-terminal-emulator'" ];' >> ~/.config/compton.conf # Need to escape the single quotes
+COMPTON=~/.config/compton.conf
+echo 'opacity-rule = [ "90:class_i = 'x-terminal-emulator'" ];' >> $COMPTON
+echo 'inactive-dim = 0.1;' >> $COMPTON
 
 I3=~/.config/i3/config
 wget -O ~/alpine.jpg https://images.pexels.com/photos/427676/pexels-photo-427676.jpeg\?cs\=srgb\&dl\=adventure-alpine-alps-427676.jpg\&fm\=jpg
@@ -48,9 +50,14 @@ echo 'exec --no-startup-id nm-applet --sm-disable' >> $I3
 echo 'exec --no-startup-id compton -b --config ~/.config/compton.conf' >> $I3
 # Remove option window
 echo 'for_window [class="^.*"] border pixel 0' >> $I3
+echo 'bindsym $mod+Shift+X exec i3lock --color 000000' >> $I3
+
 
 # Oh my zsh
+ZSHRC=~/.zshrc
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+echo 'alias i3config="vim ~/.config/i3/config"' >> $ZSHRC
+echo 'alias st="git status"' >> $ZSHRC
 
 # Python
 sudo apt install python3-pip libssl-dev python3-venv
@@ -58,4 +65,22 @@ cd
 python3 -m venv py38_venv
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 10
+
+# Pyenv
+curl https://pyenv.run | bash
+echo 'export PATH="/home/per/.pyenv/bin:$PATH"' >> $ZSHRC
+echo 'eval "$(pyenv init -)"' >> $ZSHRC
+echo 'eval "$(pyenv virtualenv-init -)"' >> $ZSHRC
+
+# Pipenv
+sudo apt install pipenv
+
+# VS code insiders
+
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+sudo apt-get install apt-transport-https
+sudo apt-get update
+sudo apt-get install code-insiders
 
