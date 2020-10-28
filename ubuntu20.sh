@@ -84,3 +84,7 @@ sudo apt-get install apt-transport-https
 sudo apt-get update
 sudo apt-get install code-insiders
 
+# Fish like auto complete
+
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+sed -i 's/plugins=(/plugins=(zsh-autosuggestions /g' $ZSHRC
