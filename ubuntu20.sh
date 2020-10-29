@@ -1,9 +1,9 @@
 sudo apt update
 sudo apt upgrade
-sudo apt install i3-wm
+sudo apt install -y i3-wm
 sudo apt install -y libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev libxcb-util0-dev libxcb-icccm4-dev libyajl-dev libstartup-notification0-dev libxcb-randr0-dev libev-dev libxcb-cursor-dev libxcb-xinerama0-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev autoconf libxcb-xrm0 libxcb-xrm-dev automake i3status suckless-tools feh i3lock rofi curl wget compton libxcb-shape0-dev
 sudo apt-get install -y git g++ libgtk-3-dev gtk-doc-tools gnutls-bin valac intltool libpcre2-dev libglib3.0-cil-dev libgnutls28-dev libgirepository1.0-dev libxml2-utils gperf zsh
-sudo apt install vim
+sudo apt install -y vim htop
 sudo apt-get install libtool
 ssh-keygen -t rsa -b 4096 -C "pernlundberg@gmail.com"
 eval "$(ssh-agent -s)"
@@ -60,7 +60,7 @@ echo 'alias i3config="vim ~/.config/i3/config"' >> $ZSHRC
 echo 'alias st="git status"' >> $ZSHRC
 
 # Python
-sudo apt install python3-pip libssl-dev python3-venv
+sudo apt install -y python3-pip libssl-dev python3-venv
 cd
 python3 -m venv py38_venv
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
@@ -73,7 +73,7 @@ echo 'eval "$(pyenv init -)"' >> $ZSHRC
 echo 'eval "$(pyenv virtualenv-init -)"' >> $ZSHRC
 
 # Pipenv
-sudo apt install pipenv
+sudo apt install -y pipenv
 
 # VS code insiders
 
@@ -88,3 +88,15 @@ sudo apt-get install code-insiders
 
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 sed -i 's/plugins=(/plugins=(zsh-autosuggestions /g' $ZSHRC
+
+# Use rofi with nord theme
+sed -i 's/dmenu_run/rofi -show drun -sidebar-mode/g' $I3
+cp Xresources ~/.Xresources
+mkdir -p ~/.config/rofi
+cp nord.rasi ~/.config/rofi/nord.rasi
+echo "rofi.theme: nord" > ~/.config/rofi/config
+
+# Bumblebee status
+git clone git://github.com/tobi-wan-kenobi/bumblebee-status ~/dev/bumblebee-status
+# Need to do some sed stuff for bar
+sudo apt install -y python3-psutil fonts-font-awesome fonts-powerline lm-sensors
